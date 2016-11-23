@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        .menu{
+            width:980px;
+            margin:0 auto;
+            text-align:center;
+        }
+        .menu a{
+            display:inline-block;
+            vertical-align:middle;
+            padding:10px 15px;
+            background:#eee;
+            border-radius:13px;
+            border:1px solid #222;
+            text-decoration:none;
+        }
+        .menu a:hover{
+            background:#222;
+            color:#fff;
+        }
+        
+        
+    </style>
+    <div class="menu">
+        {% for category in categories %}
+            <a href="/{{category.slug}}/">{{category.title}}</a>
+        {% endfor %}
+    </div>
+</body>
+</html>

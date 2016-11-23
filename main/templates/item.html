@@ -1,0 +1,124 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"></script>
+</head>
+<body>
+    <style>
+        .menu{
+            width:980px;
+            margin:0 auto;
+            text-align:center;
+        }
+        .menu a{
+            display:inline-block;
+            vertical-align:middle;
+            padding:10px 15px;
+            background:#eee;
+            border-radius:13px;
+            border:1px solid #222;
+            text-decoration:none;
+        }
+        .menu a:hover{
+            background:#222;
+            color:#fff;
+        }
+        .items{
+            font-size:0;
+            width:980px;
+            margin:0 auto;
+            text-align:center;
+        }
+        .items .item{
+            display:inline-block;
+            vertical-align:top;
+            width:200px;
+            padding:15px;
+            margin:10px;
+            text-align:center;
+        }
+        .items .item img{
+            width:100%;
+            height:auto;
+            display:block;
+        }
+        .items .item .title{
+            display:block;
+            margin-top:5px;
+            font-size:12px;
+        }
+        .items .item .price{
+            display:block;
+            margin-top:10px;
+            font-size:14px;
+            font-weight:bold;
+        }
+        .oneitem{
+            width:980px;
+            margin:0 auto;
+            text-align:center;
+        }
+        .oneitem img{
+            display:block;
+            width:100%;
+            margin:20px;
+        }
+        .oneitem .price{
+            display:inline-block;
+            font-size:16px;
+        }
+    </style>
+    <div class="menu">
+        {% for category in categories %}
+            <a href="/{{category.slug}}/">{{category.title}}</a>
+        {% endfor %}
+    </div>
+    <div class="oneitem">
+        <h1>{{item.title}}</h1>
+        <img src="/{{item.photo}}" alt="{{item.title}}" />
+        <span class="price">{{item.price}} руб.</span>
+        <a data-id="{{item.id}}" class="add_to_cart" href="#">Добавить в корзину</a>
+        <a href="#" class="buy">Перейти в корзину</a>
+    </div>
+    <script>
+        $(document).ready(function(){
+           $('.add_to_cart').click(function(){
+                var korzina = localStorage.getItem('korzina');
+                if(korzina!=null){
+                    korzina = JSON.parse(korzina);
+                    korzina.items.push({'id':$(this).data('id')});
+                    
+                    console.log(korzina);
+                }
+                else{
+                    korzina = {
+                        'items':[{'id':$(this).data('id')}]
+                    };
+                }
+                localStorage.setItem('korzina', JSON.stringify(korzina));
+                alert('Добавлено.');
+                return false;
+           });
+           $('.buy').click(function(){
+                var korzina = localStorage.getItem('korzina');
+                if(korzina!=null){
+                    korzina = JSON.parse(korzina);
+                    var arr = '';
+                    $( korzina.items ).each(function( i,data ) { 
+                        arr = arr + data.id + ',';
+                    });
+                    console.log(arr);
+                    window.location.href = '/cart/?ids='+arr;
+                }else{
+                    alert('Нужно добавить товар в корзину');
+                }
+           });
+        });
+    </script>
+</body>
+</html>

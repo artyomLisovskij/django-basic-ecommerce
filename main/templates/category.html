@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        .menu{
+            width:980px;
+            margin:0 auto;
+            text-align:center;
+        }
+        .menu a{
+            display:inline-block;
+            vertical-align:middle;
+            padding:10px 15px;
+            background:#eee;
+            border-radius:13px;
+            border:1px solid #222;
+            text-decoration:none;
+        }
+        .menu a:hover{
+            background:#222;
+            color:#fff;
+        }
+        .items{
+            font-size:0;
+            width:980px;
+            margin:0 auto;
+            text-align:center;
+        }
+        .items .item{
+            display:inline-block;
+            vertical-align:top;
+            width:200px;
+            padding:15px;
+            margin:10px;
+            text-align:center;
+        }
+        .items .item img{
+            width:100%;
+            height:auto;
+            display:block;
+        }
+        .items .item .title{
+            display:block;
+            margin-top:5px;
+            font-size:12px;
+        }
+        .items .item .price{
+            display:block;
+            margin-top:10px;
+            font-size:14px;
+            font-weight:bold;
+        }
+    </style>
+    <div class="menu">
+        {% for category in categories %}
+            <a href="/{{category.slug}}/">{{category.title}}</a>
+        {% endfor %}
+    </div>
+    <div class="items">
+        {% for item in items %}
+            <a href="/{{item.category.slug}}/{{item.slug}}/" class="item">
+                <img src="/{{item.photo}}" alt="{{item.title}}" />
+                <span class="title">{{item.title}}</span>
+                <span class="price">{{item.price}} руб.</span>
+            </a>
+        {% endfor %}
+    </div>
+</body>
+</html>

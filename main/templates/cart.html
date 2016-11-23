@@ -1,0 +1,122 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <script
+      src="https://code.jquery.com/jquery-3.1.1.min.js"
+      integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8="
+      crossorigin="anonymous"></script>
+</head>
+<body>
+    <style>
+        .menu{
+            width:980px;
+            margin:0 auto;
+            text-align:center;
+        }
+        .menu a{
+            display:inline-block;
+            vertical-align:middle;
+            padding:10px 15px;
+            background:#eee;
+            border-radius:13px;
+            border:1px solid #222;
+            text-decoration:none;
+        }
+        .menu a:hover{
+            background:#222;
+            color:#fff;
+        }
+        .items{
+            font-size:0;
+            width:980px;
+            margin:0 auto;
+            text-align:center;
+        }
+        .items .item{
+            display:inline-block;
+            vertical-align:top;
+            width:200px;
+            padding:15px;
+            margin:10px;
+            text-align:center;
+        }
+        .items .item img{
+            width:100%;
+            height:auto;
+            display:block;
+        }
+        .items .item .title{
+            display:block;
+            margin-top:5px;
+            font-size:12px;
+        }
+        .items .item .price{
+            display:block;
+            margin-top:10px;
+            font-size:14px;
+            font-weight:bold;
+        }
+        .oneitem{
+            width:980px;
+            margin:0 auto;
+            text-align:center;
+        }
+        .oneitem img{
+            display:block;
+            width:100%;
+            margin:20px;
+        }
+        .oneitem .price{
+            display:inline-block;
+            font-size:16px;
+        }
+    </style>
+    <div class="menu">
+        {% for category in categories %}
+            <a href="/{{category.slug}}/">{{category.title}}</a>
+        {% endfor %}
+    </div>
+    <div class="cart">
+        {% for item in cart %} 
+        <div class="item">
+            <span class="title">{{item.title}}</span>
+            <span class="price">{{item.price}}</span>
+            <span class="del" data-id='{{item.id}}'>Удалить</span>
+        </div>
+        {% endfor %}
+        <span class="total">{{total}}</span>
+    </div>
+    <script>
+        $(document).ready(function(){
+           $('.del').click(function(){
+                var korzina = localStorage.getItem('korzina');
+                korzina = JSON.parse(korzina);
+                var newarray = [];
+                var del = false;
+                var id = $(this).data('id');
+                $( korzina.items ).each(function( i,data ) {
+                    if((data.id==id) && (del==false) ){
+                        del=true;
+                    }
+                    else{
+                        newarray.push(data);
+                    }
+                });
+                console.log(newarray);
+                korzina.items = newarray;
+                localStorage.setItem('korzina', JSON.stringify(korzina));
+                var arr = '';
+                $( korzina.items ).each(function( i,data ) { 
+                    arr = arr + data.id + ',';
+                });
+                alert('Удалено.');
+                window.location.href = '/cart/?ids='+arr;
+                
+                return false;
+           });
+        });
+    </script>
+</body>
+</html>
